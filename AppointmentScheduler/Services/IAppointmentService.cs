@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppointmentScheduler.Services
 {
-    interface IAppointmentService
+    public interface IAppointmentService
     {
         public List<DoctorVM> GetDoctorList();
         public List<PatientVM> GetPatientList();
