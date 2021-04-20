@@ -36,7 +36,7 @@ namespace AppointmentScheduler.Services
                     Description = model.Description,
                     StartDate = startDate,
                     EndDate = endDate,
-                    Duriation = model.Duration,
+                    Duration = model.Duration,
                     DoctorId = model.DoctorId,
                     PatientId = model.PatientId,
                     IsDoctorApproved = false,
@@ -50,6 +50,28 @@ namespace AppointmentScheduler.Services
 
         }
 
+        public async Task<int> ConfirmEvent(int id)
+        {
+            var appointment = _db.Appointments.FirstOrDefault(x => x.Id == id);
+            if (appointment != null)
+            {
+                appointment.IsDoctorApproved = true;
+                return await _db.SaveChangesAsync();
+            }
+            return 0;
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            var appointment = _db.Appointments.FirstOrDefault(x => x.Id == id);
+            if (appointment != null)
+            {
+                _db.Appointments.Remove(appointment);
+                return await _db.SaveChangesAsync();
+            }
+            return 0;
+        }
+
         public List<AppointmentVM> DoctorsEventsById(string doctorId)
         {
             return _db.Appointments.Where(x => x.DoctorId == doctorId).ToList().Select(c => new AppointmentVM()
@@ -59,7 +81,7 @@ namespace AppointmentScheduler.Services
                 StartDate = c.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 EndDate = c.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Title = c.Title,
-                Duration = c.Duriation,
+                Duration = c.Duration,
                 IsDoctorApproved = c.IsDoctorApproved
             }).ToList();
         }
@@ -73,7 +95,7 @@ namespace AppointmentScheduler.Services
                 StartDate = c.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 EndDate = c.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Title = c.Title,
-                Duration = c.Duriation,
+                Duration = c.Duration,
                 IsDoctorApproved = c.IsDoctorApproved,
                 PatientId = c.PatientId,
                 DoctorId = c.DoctorId,
@@ -121,7 +143,7 @@ namespace AppointmentScheduler.Services
                 StartDate = c.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 EndDate = c.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Title = c.Title,
-                Duration = c.Duriation,
+                Duration = c.Duration,
                 IsDoctorApproved = c.IsDoctorApproved
             }).ToList();
         }
